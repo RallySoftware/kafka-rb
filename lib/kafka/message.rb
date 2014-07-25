@@ -63,6 +63,8 @@ module Kafka
     # with the messages parsed from the string, and the number of bytes
     # consumed from the string.
     def self.parse_from(data)
+      data = data.force_encoding("ASCII")
+      
       messages = []
       bytes_processed = 0
 

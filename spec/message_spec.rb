@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -83,6 +84,15 @@ describe Message do
       message.magic.should == 1
       message.checksum.should == 755095536
       message.payload.should == 'martin'
+    end
+
+    it "should parse a version-1 message from bytes with UTF-8 characters" do
+      bytes = [12, 1, 0, 2511082881, 'zwülf'].pack('NCCNa*')
+      message = Kafka::Message.parse_from(bytes).messages.first
+      message.should be_valid
+      message.magic.should == 1
+      message.checksum.should == 2511082881
+      message.payload.should == 'zwülf'.force_encoding("ASCII")
     end
 
     it "should raise an error if the magic number is not recognised" do

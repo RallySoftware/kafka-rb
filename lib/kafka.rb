@@ -37,4 +37,4 @@ module Kafka
 
   class SocketError < RuntimeError; end
 
-end
+end 
