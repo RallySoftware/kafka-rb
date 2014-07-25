@@ -21,8 +21,8 @@ end
 describe IO do
 
   before(:each) do
-    @mocked_socket = mock(TCPSocket)
-    TCPSocket.stub!(:new).and_return(@mocked_socket) # don't use a real socket
+    @mocked_socket = double(TCPSocket)
+    TCPSocket.stub(:new).and_return(@mocked_socket) # don't use a real socket
     @io = IOTest.new
     @io.connect("somehost", 9093)
   end

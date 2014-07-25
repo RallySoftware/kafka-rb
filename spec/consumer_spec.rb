@@ -17,8 +17,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Consumer do
 
   before(:each) do
-    @mocked_socket = mock(TCPSocket)
-    TCPSocket.stub!(:new).and_return(@mocked_socket) # don't use a real socket
+    @mocked_socket = double(TCPSocket)
+    TCPSocket.stub(:new).and_return(@mocked_socket) # don't use a real socket
     @consumer = Consumer.new(:offset => 0)
   end
 
@@ -84,8 +84,8 @@ describe Consumer do
     end
 
     it "should send a consumer request" do
-      @consumer.stub!(:encoded_request_size).and_return(666)
-      @consumer.stub!(:encode_request).and_return("someencodedrequest")
+      @consumer.stub(:encoded_request_size).and_return(666)
+      @consumer.stub(:encode_request).and_return("someencodedrequest")
       @consumer.should_receive(:write).with("someencodedrequest").exactly(:once).and_return(true)
       @consumer.should_receive(:write).with(666).exactly(:once).and_return(true)
       @consumer.send_consume_request.should eql(true)
@@ -98,7 +98,7 @@ describe Consumer do
     end
 
     it "should loop and execute a block with the consumed messages" do
-      @consumer.stub!(:consume).and_return([mock(Kafka::Message)])
+      @consumer.stub(:consume).and_return([double(Kafka::Message)])
       messages = []
       messages.should_receive(:<<).exactly(:once).and_return([])
       @consumer.loop do |message|
@@ -109,7 +109,7 @@ describe Consumer do
 
     it "should loop (every N seconds, configurable on polling attribute), and execute a block with the consumed messages" do
       @consumer = Consumer.new({ :polling => 1 })
-      @consumer.stub!(:consume).and_return([mock(Kafka::Message)])
+      @consumer.stub(:consume).and_return([double(Kafka::Message)])
       messages = []
       messages.should_receive(:<<).exactly(:twice).and_return([])
       executed_times = 0

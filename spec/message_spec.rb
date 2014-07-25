@@ -190,13 +190,13 @@ describe Message do
 
     if Object.const_defined? "Snappy"
       context "when snappy is available" do
-        before { Object.stub! :const_defined? => true }
+        before { Object.stub :const_defined? => true }
         it { should == 42 }
       end
     end
 
     context "when snappy is not available" do
-      before { Object.stub! :const_defined? => false }
+      before { Object.stub :const_defined? => false }
 
       it "raises an error" do
         expect { message.ensure_snappy! { 42 } }.to raise_error
@@ -211,13 +211,13 @@ describe Message do
 
     if Object.const_defined? "Snappy"
       context "when snappy is available" do
-        before { Object.stub! :const_defined? => true }
+        before { Object.stub :const_defined? => true }
         it { should == 42 }
       end
     end
 
     context "when snappy is not available" do
-      before { Object.stub! :const_defined? => false }
+      before { Object.stub :const_defined? => false }
 
       it "raises an error" do
         expect { Kafka::Message.ensure_snappy! { 42 } }.to raise_error

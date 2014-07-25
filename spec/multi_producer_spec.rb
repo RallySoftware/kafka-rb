@@ -17,8 +17,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe MultiProducer do
   before(:each) do
-    @mocked_socket = mock(TCPSocket)
-    TCPSocket.stub!(:new).and_return(@mocked_socket) # don't use a real socket
+    @mocked_socket = double(TCPSocket)
+    TCPSocket.stub(:new).and_return(@mocked_socket) # don't use a real socket
   end
 
   describe "Kafka Producer" do
@@ -55,7 +55,7 @@ describe MultiProducer do
 
     it "should compress messages" do
       subject.compression = Kafka::Message::SNAPPY_COMPRESSION
-      @mocked_socket.stub! :write => 0
+      @mocked_socket.stub :write => 0
       messages = [Kafka::Message.new("ale"), Kafka::Message.new("beer")]
 
       encoded = Encoder.produce("test", 0, messages[0])

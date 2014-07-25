@@ -19,8 +19,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Producer do
 
   before(:each) do
-    @mocked_socket = mock(TCPSocket)
-    TCPSocket.stub!(:new).and_return(@mocked_socket) # don't use a real socket
+    @mocked_socket = double(TCPSocket)
+    TCPSocket.stub(:new).and_return(@mocked_socket) # don't use a real socket
     @producer = Producer.new
   end
 
